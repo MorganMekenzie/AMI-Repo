@@ -1,0 +1,9 @@
+[web_servers]
+3.220.164.23
+3.239.216.239
+18.209.214.236
+34.232.46.29
+
+[web_servers:vars]
+ansible_user=ubuntu
+ansible_ssh_private_key_file=~/.ssh/ec2_dashboard.pem
