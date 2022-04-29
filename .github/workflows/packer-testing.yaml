@@ -16,27 +16,41 @@ jobs:
             role-to-assume: arn:aws:iam::342623272824:role/github-oidc
             aws-region: us-east-2
             role-session-name: GithubDeployment
-
+        
         - name: Checkout
           uses: actions/checkout@v3
 
         - name: Use latest Packer
           uses: hashicorp-contrib/setup-packer@v1
 
+      # fix backwards incompatibilities in template
+        - name: Fix Template
+          uses: hashicorp/packer-github-actions@master
+          with:
+            command: fix
+
+      # validate templates
+        - name: Validate Template
+          uses: hashicorp/packer-github-actions@master
+          with:
+            command: validate
+            arguments: -syntax-only
+            target: docker-ubuntu.pkr.hcl
+
         - name: Packer init
-          run: packer init
+          uses: hashicorp/packer-github-actions@master
           with:
             command: init
             target: docker-ubuntu.pkr.hcl
 
         - name: Packer Format
-          run: packer fmt
+          uses: hashicorp/packer-github-actions@master
           with:
             command: fmt
             target: docker-ubuntu.pkr.hcl
 
         - name: Packer Validate
-          run: Packer Validate
+          uses: hashicorp/packer-github-actions@master
           with:
             command: validate
             target: docker-ubuntu.pkr.hcl
