@@ -4,7 +4,7 @@ jobs:
   Packer-Fmt-Validate:
       runs-on: ubuntu-latest
       steps:
-        - run: echo "Testing our first workflow"
+        - run: echo "Testing my Packer Build"
 
         - name: Checkout
           uses: actions/checkout@v3
