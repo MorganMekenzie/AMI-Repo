@@ -36,19 +36,22 @@ jobs:
             target: docker-ubuntu.pkr.hcl
 
         - name: Packer init
-          uses: hashicorp/packer-github-actions@master
+          uses: actions/checkout@v2
           with:
+            working_directory: MorganMekenzie/AMI-repo/packer_image
             command: init
             target: docker-ubuntu.pkr.hcl
 
         - name: Packer Format
-          uses: hashicorp/packer-github-actions@master
+          uses: actions/checkout@v2
           with:
+            working_directory: MorganMekenzie/AMI-repo/packer_image
             command: fmt
             target: docker-ubuntu.pkr.hcl
 
         - name: Packer Validate
-          uses: hashicorp/packer-github-actions@master
+          uses: actions/checkout@v2
           with:
+            working_directory: MorganMekenzie/AMI-repo/packer_image
             command: validate
             target: docker-ubuntu.pkr.hcl
