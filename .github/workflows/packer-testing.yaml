@@ -23,12 +23,6 @@ jobs:
         - name: Use latest Packer
           uses: hashicorp-contrib/setup-packer@v1
 
-      # fix backwards incompatibilities in template
-        - name: Fix Template
-          uses: hashicorp/packer-github-actions@master
-          with:
-            command: fix
-
       # validate templates
         - name: Validate Template
           uses: hashicorp/packer-github-actions@master
