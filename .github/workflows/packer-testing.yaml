@@ -6,6 +6,13 @@ jobs:
       steps:
         - run: echo "Testing my Packer Build"
 
+        - name: AWS authentication
+          uses: aws-actions/configure-aws-credentials@v1
+          with:
+            role-to-assume: arn:aws:iam::342623272824:role/github-oidc
+            aws-region: us-east-2
+            role-session-name: GithubDeployment
+
         - name: Checkout
           uses: actions/checkout@v3
 
@@ -13,9 +20,6 @@ jobs:
           uses: hashicorp-contrib/setup-packer@v1
 
         - name: Packer Init
-          env:
-            AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-            AWS_SECRET_ACCESS_KEY_ID: ${{ secrets.AWS_SECRET_ACCESS_KEY_ID }}
           run: packer init
 
         - name: Packer Format
