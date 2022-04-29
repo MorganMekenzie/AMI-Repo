@@ -20,7 +20,6 @@ jobs:
         - name: Checkout
           uses: actions/checkout@v3
           with:
-            owner: MorganMekenzie
             repository: MorganMekenzie/AMI-repo
 
         - name: Use latest Packer
