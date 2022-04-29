@@ -23,8 +23,8 @@ jobs:
         - name: Use latest Packer
           uses: hashicorp-contrib/setup-packer@v1
 
-        - name: Packer Init
-          run: packer init
+        - name: Packer Init to get the latest version
+          run: packer init -upgrade
 
         - name: Packer Format
           run: packer fmt -check
