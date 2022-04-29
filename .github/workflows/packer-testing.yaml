@@ -24,6 +24,7 @@ jobs:
           uses: hashicorp-contrib/setup-packer@v1
 
         - name: Packer Format
+          id: fmt
           run: packer fmt -check
 
         - name: Packer Validate
