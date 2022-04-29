@@ -3,6 +3,10 @@ on: [push]
 jobs:
   Packer-Fmt-Validate:
       runs-on: ubuntu-latest
+      permissions:
+        packages: write
+        contents: read
+        id-token: write
       steps:
         - run: echo "Testing my Packer Build"
 
