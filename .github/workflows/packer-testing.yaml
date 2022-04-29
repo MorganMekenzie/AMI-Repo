@@ -24,11 +24,16 @@ jobs:
           uses: hashicorp-contrib/setup-packer@v1
 
         - name: Packer init
-          run: packer init docker-ubuntu.pkr.hcl
+          with:
+            command: init
+            target: docker-ubuntu.pkr.hcl
 
         - name: Packer Format
-          id: fmt
-          run: packer fmt -check docker-ubuntu.pkr.hcl
+          with:
+            command: init
+            target: docker-ubuntu.pkr.hcl
 
         - name: Packer Validate
-          run: packer validate
+          with:
+            command: validate
+            target: docker-ubuntu.pkr.hcl
