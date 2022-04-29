@@ -27,7 +27,7 @@ jobs:
 
       # validate templates
         - name: Validate Template
-          uses: hashicorp/packer-github-actions@master
+          uses: actions/checkout@v3
           with:
             working_directory: MorganMekenzie/AMI-repo/packer_image
             command: validate
