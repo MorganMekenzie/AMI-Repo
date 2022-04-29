@@ -19,6 +19,8 @@ jobs:
         
         - name: Checkout
           uses: actions/checkout@v3
+          with:
+            repository: AMI-repo
 
         - name: Use latest Packer
           uses: hashicorp-contrib/setup-packer@v1
