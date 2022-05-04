@@ -115,20 +115,6 @@
   - name: Change ownership of wp-content directory
     file: path={{path}}/wp-content/ owner=www-data group=www-data mode=755 state=directory recurse=yes
     when: stat_result.stat.exists == False
- 
-  - name: Create a our WordPress database
-    mysql_db:
-      config_file: "/etc/mysql/my.cnf"
-      name: "{{wp_db_name}}"
-      state: present
- 
-  - name: Create a new database user and password
-    mysql_user:
-      config_file: "/etc/mysql/my.cnf"
-      name: "{{wp_db_username}}"
-      password: "{{wp_db_password}}"
-      priv: '{{wp_db_name}}.*:ALL'
-      state: present
 
   - name: restart apache
     service: name=apache2 state=restarted

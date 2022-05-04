@@ -1,7 +1,7 @@
 ---
 # defaults file for wordpress
 wp_install_path: '/var/www'
-wp_directory_name: 'infinitypp'
+wp_directory_name: 'challenge-week'
  
 wp_db_name: 'Challenge-Week'
 wp_db_username: 'nm'

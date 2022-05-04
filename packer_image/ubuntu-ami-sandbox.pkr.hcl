@@ -7,8 +7,8 @@ packer {
   }
 }
 
-source "amazon-ebs" "challengeweektest2" {
-  ami_name = "final-ami-test-2"
+source "amazon-ebs" "challengeweektest3" {
+  ami_name = "final-ami-test-3"
   source_ami = "ami-0fb653ca2d3203ac1"
   instance_type = "t2.micro"
   region = "us-east-2"
@@ -19,7 +19,7 @@ source "amazon-ebs" "challengeweektest2" {
 
 build {
   sources = [
-    "source.amazon-ebs.challengeweektest2"
+    "source.amazon-ebs.challengeweektest3"
   ]
 
   provisioner "ansible" {

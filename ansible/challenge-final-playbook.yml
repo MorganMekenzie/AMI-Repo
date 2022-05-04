@@ -1,0 +1,125 @@
+---
+- hosts: all
+  become: true
+  tasks:
+  # Install LAMP stack ( Linux, Apache, MySQL, PHP)
+  - name: install lamp stack 
+    apt:
+      pkg:
+        - apache2
+        - mysql-common
+        - mysql-client
+        - php7.4
+        - php7.4-mysql
+        - php7.4-curl
+        - php7.4-json
+        - php7.4-cgi
+        - php7.4-xsl
+        - php7.4-cgi
+        - php7.4-gd
+        - php7.4-mbstring
+        - php7.4-zip
+        - php7.4-xmlrpc
+        - php7.4-soap
+        - php7.4-intl
+        - libapache2-mod-php
+      state: present
+      update_cache: yes 
+  
+  - name: Enable mod rewrite
+    apache2_module:
+      state: present
+      name: rewrite
+
+  - name: Enable the use of htaccess files in any project
+    copy:
+      src: enable_htaccess.conf
+      dest: /etc/apache2/sites-available/enable_htaccess.conf
+  
+  - name: enable the .htaccess vhost
+    file: 
+      src: /etc/apache2/sites-available/enable_htaccess.conf
+      dest: /etc/apache2/sites-enabled/enable_htaccess.conf
+      state: link
+
+  - name: Concantenate the install and directory into a single variable
+    set_fact:
+      path: "{{ wp_install_path }}/{{ wp_directory_name }}"
+ 
+  - name: Only install WordPress when there is no index.php in the path
+    stat:
+        path: "{{ path }}/index.php"
+    register: stat_result
+ 
+  - name: Ensure that installation directory exists
+    file: 
+      path: "{{ path }}" 
+      state: directory
+    when: stat_result.stat.exists == False
+
+  - name: Run command if /path/to/database does not exist (with 'cmd' parameter)
+    ansible.builtin.command:
+      cmd: wget https://en-gb.wordpress.org/latest-en_GB.tar.gz
+    when: stat_result.stat.exists == False
+ 
+  - name: Move extracted directory to {{ path }}
+    copy: 
+      src: "/tmp/"
+      dest: "{{ path }}"
+      remote_src: yes
+    when: stat_result.stat.exists == False
+ 
+  - name: Remove wordpress.tar.gz
+    file: 
+      path: "/tmp/wordpress.tar.gz" 
+      state: absent
+    when: stat_result.stat.exists == False
+ 
+  - name: Fetch random salts for WordPress config
+    local_action: command curl https://api.wordpress.org/secret-key/1.1/salt/
+    register: "wp_salt"
+    become: no
+    become_method: sudo
+
+  - name: Copy WordPress config file
+    template: 
+      src: wp-config.php 
+      dest: "{{path}}"
+
+  - name: Copy Virtual Host config file
+    template: 
+      src: vhost.conf
+      dest: "/etc/apache2/sites-available"
+  
+  - name: enable new site
+    ansible.builtin.command: "/usr/sbin/a2ensite vhost.conf"
+
+  - name: disable default Apache site
+    ansible.builtin.command: "/usr/sbin/a2dissite 000-default.conf"
+ 
+  - name: Change ownership of installation directory
+    file: 
+      path: "{{ path }}" 
+      owner: "www-data" 
+      group: "www-data"  
+      state: directory 
+      recurse: yes 
+      setype: httpd_sys_content_t
+    when: stat_result.stat.exists == False
+ 
+  - name: Change ownership of wp-content directory
+    file: 
+      path: "{{ path }}/wp-content/"
+      owner: "www-data"
+      group: "www-data" 
+      mode: 755 
+      state: directory 
+      recurse: yes
+    when: stat_result.stat.exists == False
+
+  - name: restart apache
+    service: 
+      name: apache2 
+      state: restarted
+    become: yes
+
