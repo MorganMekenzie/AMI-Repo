@@ -27,7 +27,7 @@ build {
   ]
 
   provisioner "ansible" {
-    playbook_file = "/Users/darryl.avery/challenge-weeks/AMI-Repo/ansible/challenge-final-playbook.yml"
+    playbook_file = "../ansible/challenge-final-playbook.yml"
   }
 }
 
