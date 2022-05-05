@@ -59,6 +59,6 @@ jobs:
         - name: Packer Build
           uses: actions/checkout@v2
           with:
-            repository: MorganMekenzie/AMI-repo/packer_image
+            working_directory: MorganMekenzie/AMI-repo/packer_image
             command: build
             target: ubuntu-ami-sandbox.pkr.hcl
