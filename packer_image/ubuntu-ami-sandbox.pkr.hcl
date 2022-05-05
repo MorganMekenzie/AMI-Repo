@@ -7,8 +7,12 @@ packer {
   }
 }
 
+locals {
+  timestamp = regex_replace(timestamp(), "[- TZ:]", "")
+}
+
 source "amazon-ebs" "group4-wordpress-ami" {
-  ami_name = "group4-wordpress-ami"
+  ami_name = "group4-wordpress-ami-${local.timestamp}"
   source_ami = "ami-0fb653ca2d3203ac1"
   instance_type = "t2.micro"
   region = "us-east-2"
@@ -26,3 +30,5 @@ build {
     playbook_file = "/Users/darryl.avery/challenge-weeks/AMI-Repo/ansible/challenge-final-playbook.yml"
   }
 }
+
+
