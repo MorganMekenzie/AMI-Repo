@@ -30,7 +30,6 @@ jobs:
         - name: Validate Template
           uses: actions/checkout@v2
           with:
-            working_directory: MorganMekenzie/AMI-repo/packer_image
             command: validate
             arguments: -syntax-only
             target: ubuntu-ami-sandbox.pkr.hcl
@@ -38,27 +37,23 @@ jobs:
         - name: Packer init
           uses: actions/checkout@v2
           with:
-            working_directory: MorganMekenzie/AMI-repo/packer_image
             command: init
             target: ubuntu-ami-sandbox.pkr.hcl
 
         - name: Packer Format
           uses: actions/checkout@v2
           with:
-            working_directory: MorganMekenzie/AMI-repo/packer_image
             command: fmt
             target: ubuntu-ami-sandbox.pkr.hcl
 
         - name: Packer Validate
           uses: actions/checkout@v2
           with:
-            working_directory: MorganMekenzie/AMI-repo/packer_image
             command: validate
             target: ubuntu-ami-sandbox.pkr.hcl
           
         - name: Packer Build
           uses: actions/checkout@v2
           with:
-            working_directory: MorganMekenzie/AMI-repo/packer_image
             command: build
             target: ubuntu-ami-sandbox.pkr.hcl
