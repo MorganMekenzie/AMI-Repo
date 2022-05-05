@@ -33,25 +33,25 @@ jobs:
             working_directory: MorganMekenzie/AMI-repo/packer_image
             command: validate
             arguments: -syntax-only
-            target: docker-ubuntu.pkr.hcl
+            target: ubuntu-ami-sandbox.pkr.hcl
 
         - name: Packer init
           uses: actions/checkout@v2
           with:
             working_directory: MorganMekenzie/AMI-repo/packer_image
             command: init
-            target: docker-ubuntu.pkr.hcl
+            target: ubuntu-ami-sandbox.pkr.hcl
 
         - name: Packer Format
           uses: actions/checkout@v2
           with:
             working_directory: MorganMekenzie/AMI-repo/packer_image
             command: fmt
-            target: docker-ubuntu.pkr.hcl
+            target: ubuntu-ami-sandbox.pkr.hcl
 
         - name: Packer Validate
           uses: actions/checkout@v2
           with:
             working_directory: MorganMekenzie/AMI-repo/packer_image
             command: validate
-            target: docker-ubuntu.pkr.hcl
+            target: ubuntu-ami-sandbox.pkr.hcl
