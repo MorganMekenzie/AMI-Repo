@@ -23,6 +23,8 @@
         - php7.4-soap
         - php7.4-intl
         - libapache2-mod-php
+        - tar
+        - zstd
       state: present
       update_cache: yes 
   
@@ -57,14 +59,29 @@
       state: directory
     when: stat_result.stat.exists == False
 
-  - name: Run command if /path/to/database does not exist (with 'cmd' parameter)
+  - name: Download wordpress
     ansible.builtin.command:
-      cmd: wget https://en-gb.wordpress.org/latest-en_GB.tar.gz
+      cmd: wget https://wordpress.org/latest.zip
+    when: stat_result.stat.exists == False
+
+  - name: Install unzip
+    ansible.builtin.command:
+      cmd: sudo apt install unzip
+  
+  - name: Install gunzip
+    ansible.builtin.command:
+      cmd: sudo apt install gzip
+
+  - name: Extract archive
+    ansible.builtin.unarchive:
+      src: ./latest.zip
+      dest: /tmp 
+      copy: no
     when: stat_result.stat.exists == False
  
   - name: Move extracted directory to {{ path }}
     copy: 
-      src: "/tmp/"
+      src: "/tmp/wordpress/"
       dest: "{{ path }}"
       remote_src: yes
     when: stat_result.stat.exists == False
@@ -116,10 +133,4 @@
       state: directory 
       recurse: yes
     when: stat_result.stat.exists == False
-
-  - name: restart apache
-    service: 
-      name: apache2 
-      state: restarted
-    become: yes
 
